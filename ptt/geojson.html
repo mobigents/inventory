@@ -1,0 +1,1218 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1">	
+	<!--
+	<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	-->
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyCDLnYxjcfIk7t-EMbNImqNZZuHp0-Cp5M"></script>
+
+	<link rel="stylesheet" type="text/css" href="css/jquery-gmaps-latlon-picker.css"/>
+	<link rel="stylesheet" type="text/css" href="css/font-awesome-4.3.0/css/font-awesome.css" />
+	
+	<link rel="stylesheet" type="text/css" href="css/component.css" />
+	<link rel="stylesheet" type="text/css" href="css/default.css" />
+	
+	
+    <link href="../assets/css/smartpaginator.css" rel="stylesheet" type="text/css" />
+
+	
+	
+	
+	
+	<script src="js/jquery-2.1.1.min.js"></script>
+	<script src="js/modernizr.custom.js"></script>
+	<script src="../assets/js/microutils.js"></script>
+	<script src="js/jquery-gmaps-latlon-picker.js"></script>
+	
+	<script src="../assets/js/smartpaginator.js" type="text/javascript"></script>
+
+	<script src="../assets/js/geojson.js" type="text/javascript"></script>
+	
+	
+	<script src="../assets/js/desktoputils.js" type="text/javascript"></script>
+	
+
+	
+	
+
+<style>
+body{
+margin:0px;
+}
+.head{
+	 
+  font-weight: 700;
+  font-size: .9em;
+  color: #07ade0;
+  margin-top: .1em;
+  height: 61px;
+  border-right-width: 1px;
+  border-left-width: 1px;
+  text-overflow: ellipsis;
+  border: 1px solid #eee /*{d-bup-border}*/;
+  border-width: 0;
+  border-top-width: 1px;
+  margin-top: 0px;
+  /* background: url('../image_data/topnav-bg.gif'); */
+  font-weight: bold;
+  color: #333 /*{d-bup-color}*/;
+  text-shadow: 0 /*{d-bup-shadow-x}*/ 1px /*{d-bup-shadow-y}*/ 0 /*{d-bup-shadow-radius}*/ #fff /*{d-bup-shadow-color}*/;
+ # background-color: rgb(66, 133, 244);
+  background-color: rgb(255, 255, 255);
+box-shadow: rgba(0, 0, 0, 0.137255) 0px 0px 4px 0px, rgba(0, 0, 0, 0.278431) 0px 4px 8px 0px;
+  transition: box-shadow .25s cubic-bezier(1, 0, 0, 1);
+  text-align:center;
+}
+.searchtab input{
+	height:100%
+	
+}
+.searchtab{
+	padding:5px;
+}
+.foot{
+position:fixed;
+background-color: rgba(0,0,0,0.8);
+width:100%;
+box-shadow: 0 1px 6px rgba(0, 0, 0, .35)!important;
+transition: box-shadow .25s cubic-bezier(1, 0, 0, 1);
+text-align:center;
+height:60px;
+bottom:0px;
+border-top: 1px solid #222;
+}
+.foot input{ 
+ box-shadow: 0 1px 6px rgba(0, 0, 0, .35)!important;
+ background-color: transparent;
+ color:white;
+}
+.body,.gllpMap{
+	height:100%;
+}
+.infoTracker{
+	background: rgba(0,0,0,0.5);
+	height:100%;
+	color:white;
+	opacity:1;
+	
+}
+.infoTracker ul{
+	list-style:none;
+	
+	padding:0px;
+}
+.infoTracker ul li{
+	min-height:40px;
+	height:auto;
+	margin:auto;
+	text-align:center;
+	
+}
+.infoTracker ul li div{
+	height:40px;
+	width:100%;
+	margin:auto;
+	text-align:center;
+}
+.infoTracker ul h2{
+	display:inline-block;
+	margin:0px;
+	font-size:13px;
+}
+.infoTracker ul h2.distance{
+	
+	font-size:20px;
+}
+
+#bg {  
+  background: radial-gradient(hsla(0, 0%, 0%, 0), hsla(0, 0%, 0%, 1));
+  height: 100%;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+
+#radar {
+  background: linear-gradient(#333, #111);
+  box-shadow:
+    0 0 0 1px hsla(0, 0%, 0%, 0.5),
+    inset 0 0 0 1px hsla(0, 0%, 100%, 0.15)
+  ;
+  padding: 14px;
+  border-radius: 100%;
+  display: block;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+}
+
+.body{
+margin-top:1px;
+}
+#noTrackInfo{
+	position:absolute;
+	top:40%;
+	text-align:center;
+	display: block;
+    font-size: 20px;
+    color: #e67e22;
+    padding: 0 0 0.6em 0.1em;
+	width:100%;
+	
+}
+#infoText{
+}
+
+
+.searchInfo {
+background:#181818;
+color:#FFF;
+position: absolute;
+top: -320px;
+left: 0;
+width: 100%;
+height: 320px;
+padding: 20px;
+transition: top 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+overflow: hidden;
+box-sizing: border-box;
+  box-shadow: rgba(0, 0, 0, 0.137255) 0px 0px 4px 0px, rgba(0, 0, 0, 0.278431) 0px 4px 8px 0px;
+}
+
+
+#toggle {
+  position:absolute;
+  appearance:none;
+  cursor:pointer;
+  left:-100%;
+  bootom:-100%;
+}
+
+#toggle + label {
+  position:absolute;
+  cursor:pointer;
+  padding:10px;
+  background: #26ae90;
+width: 50px;
+border-radius: 3px;
+padding: 4px 5px;
+color: #FFF;
+line-height:20px;
+font-size:12px;
+text-align:center;
+-webkit-font-smoothing: antialiased;
+cursor: pointer;
+  margin:2px 2px;
+  transition:all 500ms ease;
+  z-index:10;
+  right:42px;
+ 
+}
+
+#toggle + label:after {
+  content:"Settings" 
+}
+
+.searchInfo {
+transition: 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+  z-index:8;
+}
+
+#toggle:checked ~ .searchInfo {
+  margin-top: 0;
+}
+
+#toggle:checked ~ .searchInfo {
+  margin-top: 302px;
+}
+
+#toggle:checked + label {
+  background:#dd6149;
+}
+
+#toggle:checked + label:after {
+  content:"Close"
+}
+
+#nogps{
+	display: block;
+    height: 65px;
+    width: 80%;
+	max-width:500px;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 100%;
+    vertical-align: middle;
+    margin: auto;
+    background-color: coral;		
+	transition:all 500ms ease;
+	transition: 1000ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+
+}
+
+input[type=range].slider {
+  -webkit-appearance: none;
+  width: 100%;
+  margin: 0.7px 0;
+}
+input[type=range].slider:focus {
+  outline: none;
+}
+input[type=range].slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 25.6px;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  background: #484d4d;
+  border-radius: 0px;
+  border: 0px solid #010101;
+}
+input[type=range].slider::-webkit-slider-thumb {
+  box-shadow: 0px 0px 1px #670000, 0px 0px 0px #810000;
+  border: 0px solid #ff1e00;
+  height: 27px;
+  width: 18px;
+  border-radius: 0px;
+  background: rgba(255, 67, 95, 0.93);
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -0.7px;
+}
+input[type=range].slider:focus::-webkit-slider-runnable-track {
+  background: #818989;
+}
+input[type=range].slider::-moz-range-track {
+  width: 100%;
+  height: 25.6px;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  background: #484d4d;
+  border-radius: 0px;
+  border: 0px solid #010101;
+}
+input[type=range].slider::-moz-range-thumb {
+  box-shadow: 0px 0px 1px #670000, 0px 0px 0px #810000;
+  border: 0px solid #ff1e00;
+  height: 27px;
+  width: 18px;
+  border-radius: 0px;
+  background: rgba(255, 67, 95, 0.93);
+  cursor: pointer;
+}
+input[type=range].slider::-ms-track {
+  width: 100%;
+  height: 25.6px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+input[type=range].slider::-ms-fill-lower {
+  background: #0f1010;
+  border: 0px solid #010101;
+  border-radius: 0px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+input[type=range].slider::-ms-fill-upper {
+  background: #484d4d;
+  border: 0px solid #010101;
+  border-radius: 0px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+input[type=range].slider::-ms-thumb {
+  box-shadow: 0px 0px 1px #670000, 0px 0px 0px #810000;
+  border: 0px solid #ff1e00;
+  height: 27px;
+  width: 18px;
+  border-radius: 0px;
+  background: rgba(255, 67, 95, 0.93);
+  cursor: pointer;
+  height: 25.6px;
+}
+input[type=range].slider:focus::-ms-fill-lower {
+  background: #484d4d;
+}
+input[type=range].slider:focus::-ms-fill-upper {
+  background: #818989;
+}
+
+.leftPanel {
+        width:300px;
+		height:100%;
+		position:absolute;
+		background: white;
+		z-index:1000;
+		box-shadow:2px 2px 4px rgba(0, 0, 0, 0.15);
+}
+.leftPanel .list{
+
+	margin: 0px;padding: 0px;
+	height: 90%;
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+.leftPanel .list li{
+	height: 60px;
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+    margin: 0px;
+    word-wrap: break-word;
+    cursor: pointer;
+    background: white;
+    color: darkgrey;
+    font-size: 0.8em;
+}
+
+.list li:active,.list li.active{
+  color:coral;
+}
+
+.rightPanel{
+	float:right;	
+	background-size:cover;
+}
+
+@media screen and (max-width: 600px) {
+    .sb-search {
+		width:100%;
+    }
+	.leftPanel{
+		left:-300px;
+	}
+	.rightPanel{
+		width:100%!important;
+	}
+	
+}
+@media screen and (min-width: 600px) {
+	.searchInfo{
+		width:400px;
+		left:auto;
+		right:40px;
+		background:#fff;
+		color:#333;
+		
+	}
+	.sb-search {
+		width:400px;
+		max-width:400px;
+    }
+	.settings{
+		color:#333!important;
+	}
+}
+*:focus {
+    outline: none;
+}
+#content h2{
+   color:black;
+   font-size:16px;
+}
+
+.pager{
+padding-top:5px;
+
+}
+.sb-search-input{
+	padding:0px;
+	padding-left:40px;
+	height:40px;
+	line-height:40px;
+	font-size: 1em;
+}
+.sb-search{
+height:40px;
+line-height:40px;
+width:300px;
+left:0px;
+float:left;
+box-shadow:none;
+}
+.sb-icon-search{
+height:40px;
+line-height:40px;
+width:40px;
+right:auto;
+left:0px;
+color:#aaa;
+background: none;
+
+}
+
+.infoTable table {
+  border-collapse: separate;
+  background: #fff;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  margin: 50px auto;
+  -moz-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+}
+
+.infoTable thead {
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.infoTable thead th {
+  font-family: 'Patua One', cursive;
+  font-size: 16px;
+  font-weight: 400;
+  color: #fff;
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
+  text-align: left;
+  padding: 10px;
+  background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzY0NmY3ZiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzRhNTU2NCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+  background-size: 100%;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #646f7f), color-stop(100%, #4a5564));
+  background-image: -moz-linear-gradient(#646f7f, #4a5564);
+  background-image: -webkit-linear-gradient(#646f7f, #4a5564);
+  background-image: linear-gradient(#646f7f, #4a5564);
+  border-top: 1px solid #858d99;
+}
+.infoTable thead th:first-child {
+  -moz-border-radius-topleft: 5px;
+  -webkit-border-top-left-radius: 5px;
+  border-top-left-radius: 5px;
+}
+.infoTable thead th:last-child {
+  -moz-border-radius-topright: 5px;
+  -webkit-border-top-right-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.infoTable tbody tr td {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  color: #5f6062;
+  font-size: 13px;
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.infoTable tbody tr:nth-child(2n) {
+  background: #f0f3f5;
+}
+
+.infoTable tbody tr:last-child td {
+  border-bottom: none;
+}
+.infoTable tbody tr:last-child td:first-child {
+  -moz-border-radius-bottomleft: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.infoTable tbody tr:last-child td:last-child {
+  -moz-border-radius-bottomright: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.infoTable tbody:hover > tr td {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+  /* uncomment for blur effect */
+  /* color:transparent;
+  @include text-shadow(0px 0px 2px rgba(0,0,0,0.8));*/
+}
+
+.infoTable tbody:hover > tr:hover td {
+  text-shadow: none;
+  color: #2d2d2d;
+  filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
+  opacity: 1;
+}
+</style>
+
+
+</head>
+<body>
+	<div class="mainview itemA" align="left" id="jqt">
+		<!-- 
+		<div class="head">			
+			
+		    <div id="sb-search" class="sb-search" style="margin-top:0px;box-shadow: rgba(0, 0, 0, 0.137255) 0px 0px 4px 0px, rgba(0, 0, 0, 0.278431) 0px 4px 8px 0px;">
+						<form>
+							<input class="sb-search-input" placeholder="Search a location..." type="text" value="" name="search" id="search">
+							<input class="sb-search-submit" type="submit" value="">
+							<i class="sb-icon-search fa fa-search"></i>
+						</form>
+			</div>
+		</div>
+		 -->
+		
+		<input type="checkbox" name="toggle" id="toggle" />
+		<label for="toggle"></label>
+		
+
+
+
+		<div class="searchInfo">
+			<div id="sb-search" class="sb-search" style="margin-top:0px;
+			/*box-shadow: rgba(0, 0, 0, 0.137255) 0px 0px 4px 0px, rgba(0, 0, 0, 0.278431) 0px 4px 8px 0px;*/">
+						<form>
+							<input class="sb-search-input" placeholder="Search a location..." type="text" value="" name="search" id="search" style="border: 1px solid #aaa;
+border-radius: 4px;">
+							<input class="sb-search-submit" type="submit" value="">
+							<i class="sb-icon-search fa fa-search"></i>
+						</form>
+			</div>
+			<hr style="font-size: 14px;display: inline-block;
+width: 100%;">
+			<label style="font-size: 14px;display: inline-block;
+width: 100%;">Geo-Spatial search units</label>
+			
+			
+			
+			<table style="width:100%">			    
+				<tr>
+					<td style="font-size: 14px;color: darkblue;width:50%">Meters</td>
+					<td style="font-size: 14px;color: darkblue;width:50%">Kilo Meters</td>
+					<!-- <td style="font-size: 14px;color: darkblue;">Miles</td>	 -->				
+				</tr>				
+				<tr>					
+					<td><input class="settings" id="typeMeters" name="type" type="radio" value="meter" checked/></td>
+					<td><input class="settings" id="typeKM" name="type" type="radio" value="kilometer" /></td>
+					<!-- <td><input class="settings" id="vibrate" type="radio" /></td> -->
+				</tr>
+			</table>
+			<hr>
+			<label style="font-size:14px;">Search for objects in a distance range (meters) of </label>
+			<hr style="color:transparent;background-color: transparent;background: transparent;border: 1px solid transparent;/* padding: 2px; */margin: 2px;">
+			<div style="width:100%">
+				<input style="width:60%" id="dr" type="range" class="slider settings" min="10" value="100" max="3000" step="5" onchange="rangevalue.value=value" />
+				<input style="width:35%;text-align: center;vertical-align: top;line-height: in;padding: 4px;border: 2px solid coral;background-color: transparent;border-radius: 5px;color: white;" class="settings" id="rangevalue">
+			</div>
+			<script>
+				rangevalue.value = dr.value;
+			</script>
+			<hr>
+			<div style="width:100%">
+				<label style="font-size:14px;color: coral;">Default referencing point for the spatial query will be the current location.				
+					You can change the referencing point to a different location by seaching a new location.
+				</label>
+				
+			</div>
+			
+		</div>
+
+		<div class="body" style="display:none">
+			<div id="noTrackInfo" style="display:none">
+						<span style="color:white">No Active Tracks!!!!</span>
+			</div>
+			<div class="leftPanel">
+					
+			<div style="width:100%;height:30px;line-height:30px;margin-top: 5px; border: none;">
+				  <i class="fa fa-search" style="position:absolute;margin-top: 4;margin-left:5px"></i>
+				  <input type="text" style="margin-top: -3px;height:100%;width:100%;border-radius:10px;border:1px solid #999;background:transparent;color:white;padding:5px;padding-left:20px;"/>
+				  
+			</div>	
+						
+			<ul  class="list">
+				
+				  
+			</ul>
+			 <div id="red" style="margin: 2px;position:absolute;bottom:0px">
+
+            </div>
+
+			
+		  
+			</div>
+			<div class="rightPanel">
+				<fieldset class="gllpLatlonPicker" id="_MAP_1917" style="display:none;width: 100%; padding: 0px; margin: 0px;  border: none;">
+					
+					<div class="searchtab" style="width:100%;height:40px;display:none">
+						<input type="text" class="gllpSearchField" id="gllpSearchText">
+						<input type="button" class="gllpSearchButton" value="search">
+					</div>
+					
+					<div class="gllpMap"></div>
+					<br/>
+					<input type="hidden" class="gllpLatitude" value=""/>		
+					<input type="hidden" class="gllpLongitude" value=""/>
+					<input type="hidden" class="gllpZoom" value="17"/>
+					
+					<br/>
+				</fieldset>
+				
+				
+				<fieldset id="infoTracker" class="infoTracker" style=" width: 100%; padding: 0px; margin: 0px;  border: none;display:none">	
+					
+					<ul id="infoText" style="display:none">
+						<li>
+							
+								<span><i class="fa fa-location-arrow" style="color:deeppink"></i></span>
+								<h2 style="color:#ddd" id="location"></h2>
+							
+						</li>
+						<li>
+							
+								<span><i class="fa fa-arrows-h"></i></span>
+								<h2 id="distance" style="font-size:20px;color:gold"></h2>
+							
+						</li>
+					</ul>				
+					<div id="nogps" style="display:block">
+						<h2 style=" font-size: 16px;color:black">Searching for GPS....</h2>
+						<progress></progress>
+					</div>
+					<!--<div id="radar" style="display:none"></div>
+					-->
+					
+					
+				</fieldset>
+			</div>
+			
+		</div>
+		
+		
+		
+		<!-- <div class="foot">			
+			
+		    <input style="width: 140px;    height: 40px; border-radius: 10px; border-color: aquamarine;  vertical-align: middle; line-height: 100%; margin-top: 10px;display:none" type="button" id="gllpUpdateButton" class="gllpUpdateButton" value="Start Track" onclick="saveLocation();">
+		</div> -->
+
+	</div>
+
+
+        <script type="text/javascript" src="js/index.js"></script>
+		<script src="js/classie.js"></script>
+		<script src="js/uisearch.js"></script>
+		
+		<script type="text/javascript" src="js/microutils.js"></script>
+		<script>
+		var host="http://ec2-54-68-107-223.us-west-2.compute.amazonaws.com:8081";
+
+			function displayMap(){
+			
+				$("#infoTracker").css("display","none");
+				$("#_MAP_1917").css("display","block");
+			}
+			var uiSearch = null;
+			
+			function loadMapLocator(){
+				if(!locationTracker){
+					$(".gllpLatlonPicker").each(function() {
+						locationTracker = $(document).gMapsLatLonPicker();
+						locationTracker.init( $(this) );
+						locationTracker.initPlaces();
+						locationTracker.hideMarker();
+						setMapSize();
+					});		
+				}
+			}
+			var circle =null;
+			function setVicinityCircle(location){
+				var center = new google.maps.LatLng(location.lat(), location.lng()); 
+ 				if(!circle){
+					circle = new google.maps.Circle({
+					    center: center,
+					    map: locationTracker.getMap(),
+					    radius: parseInt($("#rangevalue").val()),          
+					    fillColor: '#FF6600',
+					    fillOpacity: 0.3,
+					    strokeColor: "#FFF",
+					    strokeWeight: 0,         
+					    editable: true
+					});
+				}else{
+					circle.setCenter(center);
+					circle.setRadius(parseInt($("#rangevalue").val()));
+				} 
+			}
+			
+			function loadLocationToMap(location){
+				
+				/* if(location){
+					locationTracker.search(location);
+					if (typeof(Storage) != "undefined") {
+						localStorage.setItem("lastlocation", location);
+					}
+				} */	
+			}
+			var cLocation = null;
+			function onAppReady(){
+				
+				uiSearch = new UISearch( document.getElementById( 'sb-search' ) );
+				//setMapSize();	
+				//$(document).gMapsLatLonPicker().initPlaces();
+				 try{
+					//$(document).gMapsLatLonPicker().initPlaces();
+					//loadMapLocator();
+					
+					uiSearch.searchCallBack(function(location){
+						//var location = $(".sb-search-input").val();						
+						//displayMap();					
+						//loadMapLocator();
+						//loadLocationToMap(location);									
+						//displayActionButtons();
+						if(location){
+							cLocation=location;
+							var modelName=getParameterByName("cid");	
+							loadGeoDataByName(modelName,location);
+							
+							
+							
+						}
+						
+					});
+					
+					//$("#infoTracker").css("display","block");
+					//loadActiveTrack();
+				}catch(e){
+					console.log(e);
+				} 
+				if(opener && opener.fetchContent){
+		      		loadGeoJson(opener.fetchContent(getParameterByName("cid")));				
+				}else{
+					var modelName=getParameterByName("cid");	
+					loadGeoDataByName(modelName);
+				}				
+			}
+			
+			function loadGeoDataByName(modelName,location){
+				if(!modelName){
+					modelName=getParameterByName("cid");
+				}
+				try{ 
+					loadObject(modelName,location,function(dataMap){
+						  var dm = new Array();
+						 dm.push({
+								"displayName" : "ID",
+								"name":"dataKey",
+								"index":"dataKey",
+								"mappedName" : "dataKey",
+								"width":"55",
+								"editable":"false",
+								"editoptions":{
+									"readonly" : "true",
+									"size" : "10"
+								}
+							});
+						 $.getJSON(
+									host+"/mobigents-rest/meta/objects/"+modelName,
+									 function(data) {
+										var json = data.columns;
+										if(json){
+											for (var i = 0; i < json.length; i++) {
+												var jd = json[i];
+												jd.index = jd.field;
+												jd.name = jd.field;
+												jd.displayName = jd.title;
+												dm.push(jd);
+											}
+										}else{
+											if(dataMap.length>0){
+												
+												var dataF = dataMap[0].data;
+												for(var k in dataF){
+													dm.push({
+														"displayName" : k,
+														"name":k,
+														"index":k,
+														"mappedName" :k,
+														"width":"55",
+														"editable":"false",
+														"editoptions":{
+															"readonly" : "true",
+															"size" : "10"
+														}
+													});
+												}
+											}
+										}
+										
+										var geoModel = new GeoModal(dm, dataMap);
+										if(data.columns && data.columns.length>0){
+											geoModel.objectKey =data.columns[0].field;//"dataKey";
+										}else{
+											geoModel.objectKey="dataKey";
+										}
+										var gi =$(geoModel).geoJson();
+										loadGeoJson(gi); 
+										
+						});
+							
+					  });
+					  
+					  
+					  
+					 }catch(e){
+						 console.log(e);
+						 alert(e);
+					 }	
+			}
+			
+			window.renderPage=function(type,index,filter){	
+				/* if(opener){
+					loadGeoJson(opener.fetchContent(getParameterByName("cid")),index);
+				}else{ */
+					loadGeoJson(fetchContent(getParameterByName("cid")),index);
+				//}
+			}
+			
+			function hideKeyboard() {
+				$(document.activeElement).filter(':input:focus').blur();
+			}
+			
+			$(document).ready( function() {
+				if (!isMobile.any()) {
+					onAppReady();
+				}
+				
+			});
+			window.onresize=function(){
+				setMapSize();
+			}
+			function setMapSize(){
+			    $(".body").css("display","block");
+			    //$(".leftPanel").height($(window).height()-(2*60));
+				$(".rightPanel").width($(window).width()-$(".leftPanel").width());
+				var height = $(window).height()-$(".head").height()-$(".foot").height();
+				//$(".body").height(height);
+				//$(".gllpMap").height(height);
+				$("#infoTracker").css("height","100%");
+				$(".rightPanel").css("height","100%");
+			}
+			var locationTracker =null;
+			
+			function loadActiveTrack(){
+				if (typeof(Storage) != "undefined") {
+					try{
+						var location = localStorage.getItem("activelocation");					
+						if(location && location !=""){
+							loadLocationInfo(JSON.parse(location));
+							$("#infoTracker").show();
+							$("#infoText").show();
+							$("#gllpUpdateButton").val("Stop Track");
+							$("#noTrackInfo").hide();
+							$(".gllpLatlonPicker").hide();	
+							$("#gllpUpdateButton").show();							
+						}else{
+							onNotracks();
+						}
+					}catch(e){
+						onNotracks();
+					}
+				}
+			}
+			
+			function onNotracks(){
+				$("#infoTracker").hide();
+				$("#infoText").hide();	
+				$("#noTrackInfo").show();
+				$("#gllpUpdateButton").hide();
+				
+			}
+			
+			function loadLocationInfo(loc){
+				$("#location").html(loc.location);
+				cLoc  = loc;
+				getLocation(onLocationFetched);
+			}	
+			var cLoc=null;
+			function getCurrentLoc(){
+				return cLoc;
+			}
+			function onLocationFetched(position){
+					$("#nogps").css("display","none");
+					var loc=getCurrentLoc();
+					var d = getDistanceFromLatLonInKm(position.coords.latitude,position.coords.longitude,loc.lat,loc.lon);
+					var unit = "Km";
+					if(parseInt(d) <= 0){
+						unit="Meters"
+					}
+					$("#distance").html(d +" ( "+unit+" ) ");
+					$("#radar").css("display","block");
+					if(!watchID){
+						watchID = setupWatch(20000);
+					}
+			}
+			
+			function getLocation(callBack) {
+				if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(callBack,function(){
+					
+					},{timeout: 30000, enableHighAccuracy: true});
+					
+				} else {
+					
+					//x.innerHTML = "Geolocation is not supported by this browser.";
+				}
+			}
+			function showPosition(position) {
+				//x.innerHTML = "Latitude: " + position.coords.latitude + 
+				//"<br>Longitude: " + position.coords.longitude; 
+				//getDistanceFromLatLonInKm(lat1)			
+				
+			}
+			
+			function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+			  var R = 6371; // Radius of the earth in km
+			  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+			  var dLon = deg2rad(lon2-lon1); 
+			  var a = 
+				Math.sin(dLat/2) * Math.sin(dLat/2) +
+				Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+				Math.sin(dLon/2) * Math.sin(dLon/2)
+				; 
+			  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+			  var d = R * c; // Distance in km
+			  d=d.toFixed(3);
+			  return d;
+			}
+
+			function deg2rad(deg) {
+			  return deg * (Math.PI/180)
+			}
+			
+	
+			window.requestAnimFrame = (function(){
+			  return  window.requestAnimationFrame       ||
+					  window.webkitRequestAnimationFrame ||
+					  window.mozRequestAnimationFrame    ||
+					  function( callback ){
+						window.setTimeout(callback, 1000 / 60);
+					  };
+			})();
+
+
+			// usage:
+			// instead of setInterval(render, 16) ....
+
+			function animateFunction(execFunction){
+			  requestAnimFrame(animateFunction);
+			  execFunction();
+			}
+			
+			function clearWatching(cid){
+				clearInterval(cid);
+				
+			}
+			var watchID = null;//navigator.geolocation.watchPosition(onSuccess, onError, { timeout: 30000 });
+			
+			function setupWatch(freq) {
+				// global var here so it can be cleared on logout (or whenever).
+				watchID = setInterval(watchLocation, freq);
+			}
+			
+			function watchLocation() {				
+				getLocation(onLocationFetched);
+			}
+			
+			function getSettings(){
+				try{
+					var settings = localStorage.getItem("settings");//{ring:"true",vibrate:"true",sms:"false",numbers:""};
+					if(!settings){
+						 settings = {rangevalue:100,ring:"true",vibrate:"true",sms:"false",numbers:""};
+						 localStorage.setItem("settings",JSON.stringify(settings));	
+					}
+					settings = JSON.parse(settings);
+					return settings;
+				}catch(e){
+					var settings = {rangevalue:100,ring:"true",vibrate:"true",sms:"false",numbers:""};
+					localStorage.setItem("settings",JSON.stringify(settings));	
+					return settings;
+				}
+			}
+			
+			function loadSettings(){
+				var settings = getSettings();
+				rangevalue.value = settings.rangevalue;
+				dr.value = settings.rangevalue;
+				
+			}
+			loadSettings();
+			$("#rangevalue").change(function(){
+				alert("Test");
+			});
+			$(".settings").change(function(){	
+					var id=$(this).attr("id");
+					var settings = getSettings();
+					switch(id){
+						case "rangevalue":
+								settings.rangevalue=rangevalue.value;
+								break;
+						case "dr":
+								settings.rangevalue=rangevalue.value;
+								break;
+						case "ring":
+								settings.ring=ring.checked;
+								break;
+						case "vibrate":
+								settings.vibrate=vibrate.checked;
+								break;
+						case "sms":
+								settings.sms=sms.checked;
+								break;
+						case "numbers":
+								settings.numbers=numbers.value;
+								break;
+						default:
+							break;
+					}
+					
+				localStorage.setItem("settings",JSON.stringify(settings));	
+				loadGeoDataByName(null,cLocation);
+			});
+
+			var infowindow=null;
+			var featureMap = [];
+			
+			function createUIList(index,feature){				
+				$(".leftPanel .list").append('<li id="'+feature.id+'">'+feature.id+'</li>');
+			}
+			var lfeature=null;
+			function highLight(id){					
+				var feature=featureMap[id];
+				if(feature==lfeature){
+					return;
+				}
+				var lat = parseFloat(feature.geometry.coordinates[1]);				
+				var lng = parseFloat(feature.geometry.coordinates[0]);				
+				var latlng = new google.maps.LatLng(lat, lng);					
+				locationTracker.getMap().panTo(latlng);
+				showMarkerContent(feature.marker,feature);
+				lfeature=feature;
+				//alert(JSON.stringify(featureMap[id].properties));
+			}
+			function loadGeoJson(geoJson,index){
+				$(".leftPanel .list").empty();
+				for(var k in featureMap){
+					featureMap[k].marker.setMap(null);				    				
+				}
+				featureMap=[];
+				loadMapLocator();
+				displayMap();	
+				if(!(geoJson && geoJson.features && geoJson.features.length>0)){
+					return;
+				}
+				var lat = parseFloat(geoJson.features[0].geometry.coordinates[1]);				
+				var lng = parseFloat(geoJson.features[0].geometry.coordinates[0]);				
+				var latlng = new google.maps.LatLng(lat, lng);				
+				locationTracker.getMap().panTo(latlng);				
+				$(geoJson.features).each(function(i,j){					
+					var lat = parseFloat(j.geometry.coordinates[1]);				
+					var lng = parseFloat(j.geometry.coordinates[0]);				
+					var latlng = {lat: lat, lng: lng};					
+					var marker = loadMarker(latlng,j);
+					featureMap[j.id] = j;
+					j.marker = marker;
+					createUIList(i,j);
+					//position: {lat: 59.327, lng: 18.067}
+				});
+				infowindow = new google.maps.InfoWindow();
+				
+				$(".leftPanel .list li").click(function(){
+					$(".leftPanel .list li").removeClass("active");
+					var id=$(this).attr("id");
+					$(this).addClass("active");
+					highLight(id);
+				});
+				if(!window.paginated){
+					$('#red').empty();
+					$('#red').smartpaginator({ totalrecords: geoJson.total, recordsperpage: geoJson.pageLength,
+						length: 10, next: 'Next', prev: 'Prev', first: 'First',
+						last: 'Last', theme: 'red',
+						controlsalways: true, 
+						onchange: function (newPage) {	                	
+							if(opener){							
+								opener.fetchPageRemote(getParameterByName("cid"),newPage,null);
+							}
+							
+		            	}
+	
+		            });
+				}
+				/*try{
+					var ii= parseInt(index);
+					if(ii>1){
+						$('#red ul').find('li:eq(0) a').removeClass('active');
+						$('#red ul').find('li:eq('+(ii-1)+') a').addClass('active');				
+					}
+				}catch(e){
+					
+				}*/
+				window.paginated=true;
+				
+	      	}      	
+	      	
+	      	function loadMarker(latlng,feature){	
+	      		loadMapLocator();
+	      		var map= locationTracker.getMap();
+	      		
+		      	marker = new google.maps.Marker({
+		      	    map: map,
+		      	    draggable: true,
+		      	    animation: google.maps.Animation.DROP,
+		      	    position: latlng
+		      	  });
+		      	marker.addListener('click',  (function(marker,feature) {
+		            return function() {
+		            	showMarkerContent(marker,feature);
+		            }
+		        })(marker,feature));
+		      	
+		      	
+			    
+		      	return marker;
+	      	}
+
+	      	function showMarkerContent(marker,feature){	      		
+	      		var contentString ='<div id="content" class="infoTable" style="width:400px; background-color:white;"><h2>'+feature.id+'</h2><hr><table><thead><th>Property</th><th>Value</th></thead>';		            	
+            	for(var k in feature.properties){            		
+            		contentString += ("<tr><td>"+k+"</td><td>"+(feature.properties)[k])+"</td></tr>";		            		
+            	}
+            	contentString +='</table></div>';
+                infowindow.setContent(contentString);
+                if (marker.getAnimation() !== null) {
+		      	    marker.setAnimation(null);
+		      	} else {
+		      	    marker.setAnimation(google.maps.Animation.BOUNCE);		      	    
+		      	    setTimeout(function(){
+		      	    	if (marker.getAnimation() !== null) {
+		 		      	    marker.setAnimation(null);
+		 		      	} 
+		      	    },2000);
+		      	}
+                infowindow.open(marker.map, marker);
+	      	}
+	      	
+	      	function loadObject(name,location,callBack){
+	      		var url = host+"/mobigents-rest/objects/"+name;
+	      		//alert($("#rangevalue").val());
+				if(location){
+					
+					
+					url+="?lat="+location.lat()+"&lon="+location.lng()+"&distance="+$("#rangevalue").val();
+					setVicinityCircle(location);
+				}
+				$.getJSON(
+						url,
+						 function(data) {
+							var json = data.rows;
+							var profileMap=new Array();
+							var template1 = $("#cmScript").html();
+							for (var i = 0; i < json.length; i++) {
+								var jd = json[i];
+								profileMap.push(jd);
+								jd.lastModified = new Date(jd.timemilli);
+							}
+							callBack(profileMap);
+							
+						});
+				
+			}
+	      	
+		</script>
+		
+    </body>
+</html>

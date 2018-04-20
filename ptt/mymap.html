@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+	<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	-->
+<script
+	src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyCDLnYxjcfIk7t-EMbNImqNZZuHp0-Cp5M"></script>
+
+<link rel="stylesheet" type="text/css"
+	href="css/jquery-gmaps-latlon-picker.css" />
+<link rel="stylesheet" type="text/css"
+	href="css/font-awesome-4.3.0/css/font-awesome.css" />
+
+<link rel="stylesheet" type="text/css" href="css/component.css" />
+<link rel="stylesheet" type="text/css" href="css/default.css" />
+
+
+<link href="../assets/css/smartpaginator.css" rel="stylesheet"
+	type="text/css" />
+
+
+
+
+
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/modernizr.custom.js"></script>
+<script src="../assets/js/microutils.js"></script>
+<script src="js/jquery-gmaps-latlon-picker.js"></script>
+
+<script src="../assets/js/smartpaginator.js" type="text/javascript"></script>
+
+<script src="../assets/js/geojson.js" type="text/javascript"></script>
+
+
+<script src="../assets/js/desktoputils.js" type="text/javascript"></script>
+
+<style>
+body{
+margin:0px;
+}
+.head{
+	 
+  font-weight: 700;
+  font-size: .9em;
+  color: #07ade0;
+  margin-top: .1em;
+  height: 61px;
+  border-right-width: 1px;
+  border-left-width: 1px;
+  text-overflow: ellipsis;
+  border: 1px solid #eee /*{d-bup-border}*/;
+  border-width: 0;
+  border-top-width: 1px;
+  margin-top: 0px;
+  /* background: url('../image_data/topnav-bg.gif'); */
+  font-weight: bold;
+  color: #333 /*{d-bup-color}*/;
+  text-shadow: 0 /*{d-bup-shadow-x}*/ 1px /*{d-bup-shadow-y}*/ 0 /*{d-bup-shadow-radius}*/ #fff /*{d-bup-shadow-color}*/;
+ # background-color: rgb(66, 133, 244);
+  background-color: rgb(255, 255, 255);
+box-shadow: rgba(0, 0, 0, 0.137255) 0px 0px 4px 0px, rgba(0, 0, 0, 0.278431) 0px 4px 8px 0px;
+  transition: box-shadow .25s cubic-bezier(1, 0, 0, 1);
+  text-align:center;
+}
+.searchtab input{
+	height:100%
+	
+}
+.searchtab{
+	padding:5px;
+}
+.foot{
+position:fixed;
+background-color: rgba(0,0,0,0.8);
+width:100%;
+box-shadow: 0 1px 6px rgba(0, 0, 0, .35)!important;
+transition: box-shadow .25s cubic-bezier(1, 0, 0, 1);
+text-align:center;
+height:60px;
+bottom:0px;
+border-top: 1px solid #222;
+}
+.foot input{ 
+ box-shadow: 0 1px 6px rgba(0, 0, 0, .35)!important;
+ background-color: transparent;
+ color:white;
+}
+.body,.gllpMap{
+	height:100%;
+}
+.infoTracker{
+	background: rgba(0,0,0,0.5);
+	height:100%;
+	color:white;
+	opacity:1;
+	
+}
+.infoTracker ul{
+	list-style:none;
+	
+	padding:0px;
+}
+.infoTracker ul li{
+	min-height:40px;
+	height:auto;
+	margin:auto;
+	text-align:center;
+	
+}
+.infoTracker ul li div{
+	height:40px;
+	width:100%;
+	margin:auto;
+	text-align:center;
+}
+.infoTracker ul h2{
+	display:inline-block;
+	margin:0px;
+	font-size:13px;
+}
+.infoTracker ul h2.distance{
+	
+	font-size:20px;
+}
+
+#bg {  
+  background: radial-gradient(hsla(0, 0%, 0%, 0), hsla(0, 0%, 0%, 1));
+  height: 100%;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+
+#radar {
+  background: linear-gradient(#333, #111);
+  box-shadow:
+    0 0 0 1px hsla(0, 0%, 0%, 0.5),
+    inset 0 0 0 1px hsla(0, 0%, 100%, 0.15)
+  ;
+  padding: 14px;
+  border-radius: 100%;
+  display: block;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+}
+
+</style>
+</head>
+<body>
+	<fieldset class="gllpLatlonPicker" id="_MAP_1917"
+		style="display: none; width: 100%; padding: 0px; margin: 0px; border: none;">
+
+		<div class="searchtab"
+			style="width: 100%; height: 40px; display: none">
+			<input type="text" class="gllpSearchField" id="gllpSearchText">
+			<input type="button" class="gllpSearchButton" value="search">
+		</div>
+
+		<div class="gllpMap"></div>
+		<br /> <input type="hidden" class="gllpLatitude" value="" /> <input
+			type="hidden" class="gllpLongitude" value="" /> <input type="hidden"
+			class="gllpZoom" value="17" /> <br />
+	</fieldset>
+
+	<script>
+	var host="http://ec2-54-68-107-223.us-west-2.compute.amazonaws.com:8081";
+
+    var locationTracker=null;
+    function displayMap(){
+		
+		$("#infoTracker").css("display","none");
+		$("#_MAP_1917").css("display","block");
+	}
+    function loadMapLocator(){
+		if(!locationTracker){
+			$(".gllpLatlonPicker").each(function() {
+				locationTracker = $(document).gMapsLatLonPicker();
+				locationTracker.init( $(this) );
+				//locationTracker.initPlaces();
+				//locationTracker.hideMarker();
+				setMapSize();
+				displayMap();
+			});		
+		}
+	}
+    
+    function setMapSize(){
+	    $(".body").css("display","block");
+	    //$(".leftPanel").height($(window).height()-(2*60));
+		$(".gllpLatlonPicker").width($(window).width());
+		var height = $(window).height();
+		$(".body").height(height);
+		$(".gllpMap").height(height);
+		//$("#infoTracker").css("height","100%");
+		//$(".rightPanel").css("height","100%");
+	}
+    
+      function initMap() {
+    	  loadMapLocator();
+    	  /*  var center = new google.maps.LatLng(47.4265484967979, 15.2770471572876);     
+
+    	    
+    	        var circle = new google.maps.Circle({
+    	            center: center,
+    	            map: locationTracker.getMap(),
+    	            radius: 100,          // IN METERS.
+    	            fillColor: '#FF6600',
+    	            fillOpacity: 0.3,
+    	            strokeColor: "#FFF",
+    	            strokeWeight: 0         // DON'T SHOW CIRCLE BORDER.
+    	        });
+    	        
+    	        locationTracker.getMap().panTo(center)
+    	         */
+    	        var modelName=getParameterByName("cid");	
+				loadGeoDataByName(modelName);
+      }
+      
+      function onAppReady(){
+    	  
+    	  initMap();
+      }
+      
+      $(document).ready( function() {
+			if (!isMobile.any()) {
+				onAppReady();
+			}
+			
+		});
+      
+      
+		function loadGeoDataByName(modelName,location){
+			if(!modelName){
+				modelName=getParameterByName("cid");
+			}
+			try{ 
+				loadObject(modelName,location,function(dataMap){
+					  var dm = new Array();
+					 dm.push({
+							"displayName" : "ID",
+							"name":"dataKey",
+							"index":"dataKey",
+							"mappedName" : "dataKey",
+							"width":"55",
+							"editable":"false",
+							"editoptions":{
+								"readonly" : "true",
+								"size" : "10"
+							}
+						});
+					 $.getJSON(
+								host+"/mobigents-rest/meta/objects/"+modelName,
+								 function(data) {
+									var json = data.columns;
+									if(json){
+										for (var i = 0; i < json.length; i++) {
+											var jd = json[i];
+											jd.index = jd.field;
+											jd.name = jd.field;
+											jd.displayName = jd.title;
+											dm.push(jd);
+										}
+									}else{
+										if(dataMap.length>0){
+											
+											var dataF = dataMap[0].data;
+											for(var k in dataF){
+												dm.push({
+													"displayName" : k,
+													"name":k,
+													"index":k,
+													"mappedName" :k,
+													"width":"55",
+													"editable":"false",
+													"editoptions":{
+														"readonly" : "true",
+														"size" : "10"
+													}
+												});
+											}
+										}
+									}
+									
+									var geoModel = new GeoModal(dm, dataMap);
+									if(data.columns && data.columns.length>0){
+										geoModel.objectKey =data.columns[0].field;//"dataKey";
+									}else{
+										geoModel.objectKey="dataKey";
+									}
+									var gi =$(geoModel).geoJson();
+									loadGeoJson(gi); 
+									
+					});
+						
+				  });
+				  
+				  
+				  
+				 }catch(e){
+					 console.log(e);
+					 alert(e);
+				 }	
+		}
+		
+		function loadGeoJson(geoJson,index){
+			$(".leftPanel .list").empty();
+			for(var k in featureMap){
+				featureMap[k].marker.setMap(null);				    				
+			}
+			featureMap=[];
+			loadMapLocator();
+			displayMap();	
+			if(!(geoJson && geoJson.features && geoJson.features.length>0)){
+				return;
+			}
+			var lat = parseFloat(geoJson.features[0].geometry.coordinates[1]);				
+			var lng = parseFloat(geoJson.features[0].geometry.coordinates[0]);				
+			var latlng = new google.maps.LatLng(lat, lng);				
+			locationTracker.getMap().panTo(latlng);				
+			$(geoJson.features).each(function(i,j){					
+				var lat = parseFloat(j.geometry.coordinates[1]);				
+				var lng = parseFloat(j.geometry.coordinates[0]);				
+				var latlng = {lat: lat, lng: lng};					
+				var marker = loadMarker(latlng,j);
+				featureMap[j.id] = j;
+				j.marker = marker;
+				createUIList(i,j);
+				//position: {lat: 59.327, lng: 18.067}
+			});
+			infowindow = new google.maps.InfoWindow();
+			
+			$(".leftPanel .list li").click(function(){
+				$(".leftPanel .list li").removeClass("active");
+				var id=$(this).attr("id");
+				$(this).addClass("active");
+				highLight(id);
+			});
+			if(!window.paginated){
+				$('#red').empty();
+				$('#red').smartpaginator({ totalrecords: geoJson.total, recordsperpage: geoJson.pageLength,
+					length: 10, next: 'Next', prev: 'Prev', first: 'First',
+					last: 'Last', theme: 'red',
+					controlsalways: true, 
+					onchange: function (newPage) {	                	
+						if(opener){							
+							opener.fetchPageRemote(getParameterByName("cid"),newPage,null);
+						}
+						
+	            	}
+
+	            });
+			}
+			/*try{
+				var ii= parseInt(index);
+				if(ii>1){
+					$('#red ul').find('li:eq(0) a').removeClass('active');
+					$('#red ul').find('li:eq('+(ii-1)+') a').addClass('active');				
+				}
+			}catch(e){
+				
+			}*/
+			window.paginated=true;
+			
+      	}      	
+		var featureMap = [];
+      	function loadMarker(latlng,feature){	
+      		loadMapLocator();
+      		var map= locationTracker.getMap();
+      		
+	      	marker = new google.maps.Marker({
+	      	    map: map,
+	      	    draggable: true,
+	      	    animation: google.maps.Animation.DROP,
+	      	    position: latlng
+	      	  });
+	      	marker.addListener('click',  (function(marker,feature) {
+	            return function() {
+	            	showMarkerContent(marker,feature);
+	            }
+	        })(marker,feature));
+	      	
+	      	
+		    
+		     var sunCircle = {
+		        strokeColor: "#c3fc49",
+		        strokeOpacity: 0.3,
+		        strokeWeight: 0,
+		        fillColor: "#c3fc49",
+		        fillOpacity: 0.35,
+		        map: map,
+		        center: latlng,
+		        radius: 100 // in meters
+		    }; 
+		    cityCircle = new google.maps.Circle(sunCircle);
+		    
+	      	return marker;
+      	}
+
+      	function showMarkerContent(marker,feature){	      		
+      		var contentString ='<div id="content" class="infoTable" style="width:400px; background-color:white;"><h2>'+feature.id+'</h2><hr><table><thead><th>Property</th><th>Value</th></thead>';		            	
+        	for(var k in feature.properties){            		
+        		contentString += ("<tr><td>"+k+"</td><td>"+(feature.properties)[k])+"</td></tr>";		            		
+        	}
+        	contentString +='</table></div>';
+            infowindow.setContent(contentString);
+            if (marker.getAnimation() !== null) {
+	      	    marker.setAnimation(null);
+	      	} else {
+	      	    marker.setAnimation(google.maps.Animation.BOUNCE);		      	    
+	      	    setTimeout(function(){
+	      	    	if (marker.getAnimation() !== null) {
+	 		      	    marker.setAnimation(null);
+	 		      	} 
+	      	    },2000);
+	      	}
+            infowindow.open(marker.map, marker);
+      	}
+      	
+      	function loadObject(name,location,callBack){
+      		var url = host+"/mobigents-rest/objects/"+name;
+      		//alert($("#rangevalue").val());
+			if(location){
+				
+				
+				url+="?lat="+location.lat()+"&lon="+location.lng()+"&distance="+$("#rangevalue").val();
+				
+			}
+			$.getJSON(
+					url,
+					 function(data) {
+						var json = data.rows;
+						var profileMap=new Array();
+						var template1 = $("#cmScript").html();
+						for (var i = 0; i < json.length; i++) {
+							var jd = json[i];
+							profileMap.push(jd);
+							jd.lastModified = new Date(jd.timemilli);
+						}
+						callBack(profileMap);
+						//setVicinityCircle(location);
+					});
+			
+		}
+      	function createUIList(index,feature){				
+			$(".leftPanel .list").append('<li id="'+feature.id+'">'+feature.id+'</li>');
+		}
+    </script>
+
+
+	<script type="text/javascript" src="js/index.js"></script>
+	<script src="js/classie.js"></script>
+	<script src="js/uisearch.js"></script>
+
+	<script type="text/javascript" src="js/microutils.js"></script>
+	<!-- <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyCDLnYxjcfIk7t-EMbNImqNZZuHp0-Cp5M"></script>
+     -->
+	<!-- <script async defer
+		src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyCDLnYxjcfIk7t-EMbNImqNZZuHp0-Cp5M&callback=initMap">
+    </script> -->
+
+
+</body>
+</html>

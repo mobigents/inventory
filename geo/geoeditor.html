@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+	<title>Location Editor</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+	
+	<meta charset="utf-8" />
+	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	
+	<!-- Dependencies: JQuery and GMaps API should be loaded first -->
+	<script src="js/jquery-2.1.1.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyCDLnYxjcfIk7t-EMbNImqNZZuHp0-Cp5M"></script>
+	
+	
+    
+
+	<!-- CSS and JS for our code -->
+	<link rel="stylesheet" type="text/css" href="css/jquery-gmaps-latlon-picker.css"/>
+	
+	<style>
+	body,html{
+		padding:0px;
+		margin:0px;
+		height:100%;
+	}
+	fieldset {
+	margin: 0px;
+    padding: 10px;
+    border:none;
+    height:100%;
+}
+input{
+	height:20px;
+}
+.gllpZoom{
+	width: 50px;
+	
+}
+.gllpUpdateButton,.gllpSearchButton{
+	height:25px;
+	width:75px;
+	}
+	.gllpSearchField{
+		width:200px;
+	}
+	
+	/* If the map DIV doesn't have a size set up, it won't appear on the page */
+.gllpMap	{ width: 100%; height: calc(100% - 100px); }
+
+th{
+	text-align: left;
+	font-weight: 100;
+	font-style: normal;
+}
+	</style>
+	
+</head>
+<body>
+
+	<fieldset class="gllpLatlonPicker">
+		
+		<input type="text" class="gllpSearchField">
+		<button type="button" class="gllpSearchButton">Search</button>
+		
+		<div class="gllpMap">Google Maps</div>
+		
+		<table>
+		<tr>
+			<th>Lat</th>
+			<th>Lon</th>
+			<th>Zoom</th>
+			<th></th>
+		</tr>
+		<tr>
+			
+			<td><input type="text" class="gllpLatitude" value="0"/></td>
+			
+			<td><input type="text" class="gllpLongitude" value="0"/></td>
+			
+			<td><input type="text" class="gllpZoom" value="16"/></td>
+			
+			<td><button type="button" class="gllpUpdateButton" >Update</button>
+		</tr>
+		</table>
+	</fieldset>
+
+<script type="text/javascript">
+function gpsParameterInit(){
+	
+	
+}
+$(".gllpLatitude").val(getParameterByName("lat"));
+$(".gllpLongitude").val(getParameterByName("lon"));
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+
+
+</script>
+<script src="js/jquery-gmaps-latlon-picker.js"></script>
+
+</body>
+</html>

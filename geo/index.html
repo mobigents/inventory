@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+</head>
+<body>
+	
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	
+	<script type="text/javascript">
+	
+	
+	
+	var data={
+			"isoCc": "DEU",
+			"lang": "GER",	
+			"streetNames": [{
+			"id": "123",
+			"inputName": "Anliegerstr."
+			}
+			]
+			};
+	
+function execRootGetCommand(data,callBack) {
+		//alert("hhh");
+		
+			$.ajax({
+				type : "POST",
+				url : "http://nns.prd.internal.community.nw.ops.here.com/nns/service/normalize",
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+				data : JSON.stringify(data),
+				beforeSend: function(xhr){xhr.setRequestHeader('authorization', 'Basic YmFsZW5vOlMzUjNubnM=');},
+				success : function(data, status) {
+					callBack(data);
+				},
+				async : true
+			});
+		
+
+}
+execRootGetCommand(data,function(resp){
+	alert(JSON.stringify(resp));
+});
+
+	
+	</script>
+</body>
+</html>
