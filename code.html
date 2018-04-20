@@ -1,0 +1,86 @@
+<!doctype html>
+
+<title>CodeMirror: Python mode</title>
+<meta charset="utf-8" />
+<link rel=stylesheet href="CodeMirror-master/doc/docs.css">
+
+<link rel="stylesheet" href="CodeMirror-master/lib/codemirror.css">
+<script src="CodeMirror-master/lib/codemirror.js"></script>
+<script src="CodeMirror-master/addon/edit/matchbrackets.js"></script>
+<script src="CodeMirror-master/mode/python/python.js"></script>
+<style type="text/css">
+.CodeMirror {
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	height:100%;
+}
+
+</style>
+
+
+<article style="margin:0 10% 0;width:100%;max-width:90%;height:100%;overflow:auto;">
+	
+	<div>
+		<textarea id="code" name="code">
+
+
+def validateJsonWithExpectdWithTag1(layer_name,operation,tag,jsonRepsonse,ignore):
+    with open('integration-test/automatedTests/'+layer_name+'/data/'+operation+'/expected_'+tag+'.json') as expectedFile:
+        expectedResponse = json.loads(expectedFile.read())
+    resp = are_same(expectedResponse,jsonRepsonse,True,ignore)
+    print resp
+    assert resp[0]
+
+
+
+			
+
+		</textarea>
+	</div>
+
+
+
+	<script>
+		var editor = null;
+		window.getCurrentCode=function(){
+			
+			return editor.getValue();
+			
+		}
+		if(window.parent && window.parent.fetchMetaInfo){
+			var data = window.parent.fetchMetaInfo();
+			
+			var d = document.createElement('div');
+			d.innerHTML = data;
+			data=d.innerHTML;
+			
+			document.getElementById("code").value=data;
+			document.getElementById("code").innerHTML=data;
+			
+			 editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+				mode : {
+					name : "python",
+					version : 3,
+					singleLineStringErrors : false
+				},
+				lineNumbers : true,
+				indentUnit : 4,
+				matchBrackets : true
+			});
+		}else{
+			
+			 editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+				mode : {
+					name : "python",
+					version : 3,
+					singleLineStringErrors : false
+				},
+				lineNumbers : true,
+				indentUnit : 4,
+				matchBrackets : true
+			});
+		}
+		
+		
+	</script>
+</article>

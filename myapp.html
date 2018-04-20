@@ -1,0 +1,671 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Vector Steps</title>
+<link rel="stylesheet" type="text/css" media="screen"
+	href="drag/dragutildesign.css" />
+	
+<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+<link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />	
+<link href="assets/css/light-bootstrap-dashboard.css" rel="stylesheet" />
+
+<script src="https://code.jquery.com/jquery-1.12.4.js" type="text/javascript"></script>
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" type="text/javascript"></script>
+
+<script src="drag/stepsdesign.js" type="text/javascript"></script>
+<script src="drag/stepData.js" type="text/javascript"></script>
+
+<script src="drag/dragutil.js" type="text/javascript"></script>
+<style>
+.item {
+	padding: 0px;
+	list-style: none;
+	border: 0px none;
+	outline: 0px none;
+	color: #555;
+}
+
+.title {
+	background: url(images/homepage_item_title.gif);
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+	border: 0px none;
+	outline: 0px none;
+	color: #555;
+	height: 39px;
+}
+
+.content {
+	margin-top: 0px;
+	background: url(images/homepage_item_tile.gif);
+	padding: 10px 15px;
+}
+
+.bottom {
+	background: url(images/homepage_item_bottom.gif);
+	height: 14px;
+	overflow: hidden;
+}
+
+.main {
+	width: 488px;
+}
+
+.heading {
+	float: left;
+	margin-left: 10px;
+	text-align: center;
+	font-size: 13px;
+	color: #0095C0;
+	font-weight: bold;
+	line-height: 30px;
+	text-decoration: none;
+	text-shadow: white 1px 1px 2px;
+}
+
+
+
+.step {
+	min-width: 120px;
+	min-height: 80px;
+}
+
+.step .head {
+	font-size: 10pt;
+	word-wrap: break-word;
+	width: 100%;
+	font-weight: normal;
+}
+
+.indlabel {
+	font-weight: normal;
+	width: 100px;
+}
+
+button {
+	display: inline-block;
+	padding: 2px 14px;
+	margin-bottom: 0;
+	font-size: 10pt;
+	font-weight: bold;
+	line-height: 20px;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+	color: #333;
+	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+	background-color: #f5f5f5;
+	background-image: -moz-linear-gradient(top, #fff, #e6e6e6);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fff),
+		to(#e6e6e6) );
+	background-image: -webkit-linear-gradient(top, #fff, #e6e6e6);
+	background-image: -o-linear-gradient(top, #fff, #e6e6e6);
+	background-image: linear-gradient(to bottom, #fff, #e6e6e6);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',
+		endColorstr='#ffe6e6e6', GradientType=0 );
+	border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled=     false );
+	border: 1px solid #bbb;
+	border-bottom-color: #a2a2a2;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px
+		rgba(0, 0, 0, 0.05);
+	-moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px
+		rgba(0, 0, 0, 0.05);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px
+		rgba(0, 0, 0, 0.05);
+}
+
+.stepfail {
+	background: #f00;
+	background-color: #f00 !important;
+	z-index: 2;
+}
+
+.stepnone {
+	background: #eee;
+	background-color: #eee !important;
+	z-index: 2;
+}
+
+.stepsuccess {
+	background: #0f0;
+	background-color: #0f0 !important;
+	z-index: 2;
+}
+/* the overlayed element */
+.apple_overlay { /* initially overlay is hidden */
+	display: none;
+	/* growing background image */
+	background-image: url(trans.png);
+	/*
+      width after the growing animation finishes
+      height is automatically calculated
+      */
+	width: 640px;
+	/* some padding to layout nested elements nicely  */
+	padding: 35px;
+	/* a little styling */
+	font-size: 11px;
+}
+
+/* default close button positioned on upper right corner */
+.apple_overlay .close {
+	background-image: url(close.png);
+	position: absolute;
+	right: 5px;
+	top: 5px;
+	cursor: pointer;
+	height: 35px;
+	width: 35px;
+}
+
+.apple_overlay h2 {
+	color: black;
+	float: left;
+	width: 25%;
+	word-wrap: wrap-text;
+	font-size: 10pt;
+	font-weight: normal;
+	font-family: helvetica;
+}
+
+li {
+	list-style: none;
+	height: 50px;
+	background: #fff;
+	border-bottom: 1px solid #eee;
+	border-left: 1px solid #eee;
+	border-right: 1px solid #eee;
+	margin: 0px;
+	font-family: helvetica;
+}
+
+li:first-child {
+	border-radius: 5px 5px 0px 0px;
+	text-align: left;
+	height: 40px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	color: fff;
+	background-color: #6D84B4;
+	border-radius: 5px 5px 0 0;
+	border: 1px solid #3B5998;
+	font-size: 10pt;
+}
+
+li:last-child {
+	border-radius: 0px 0px 5px 5px;
+}
+
+li:first-child h2 {
+	color: white;
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+.easing {
+	-webkit-transition: all 1s ease-in-out;
+	-moz-transition: all 1s ease-in-out;
+	-o-transition: all 1s ease-in-out;
+	transition: all 1s ease-in-out;
+}
+
+.details {
+	color: white;
+	font-size: 10pt;
+	font-weight: bold;
+	line-height: 20px;
+	font-family: helvetica;
+}
+
+#mainCanvas {
+	width: 64%;
+}
+
+#commandsContainer {
+	float: left;
+	width: 15%;
+}
+
+#propertiesContainer {
+	float: left;
+	width: 20%;
+	background-color: #fff;
+}
+
+#commandsContainer {
+	float: left;
+	background-color: #fff;
+	float: left;
+}
+
+#commands {
+	padding: 5px;
+}
+
+.command {
+	z-index: 999;
+    border: 1px solid #ccc;
+    padding: 5px;
+    vertical-align: top;
+    background: #eee;
+    font-weight: normal;
+    margin-bottom: 10px;
+    color: #222;
+    /* text-shadow: 0 1px 0 #ffffff; */
+    /* background-image: url(topnav-overlay-bg.gif); */
+    /* background-color: rgba(255, 0, 0, 0.5); */
+    /* -webkit-border-radius: 10px; */
+    -moz-border-radius: 10px;
+    -webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, .3);
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, .3);
+    /* width: 80%; */
+    /* width: 120px; */
+    cursor: move;
+    text-align: center;
+}
+
+.stepControls {
+	float: right;
+	clear: both;
+	margin-right: 2px;
+}
+.stepControl {
+	padding:4px;
+}
+h3{
+	font-size: 1.2em;
+    text-align: center;
+    padding: 10px;
+    margin: 0px;
+}
+
+#propertiesContainer td{
+
+padding:10px;
+color:black;
+
+}
+
+</style>
+
+
+
+
+</head>
+<body style="background:gray">
+
+
+	<div id="commandsContainer" style="height:100%;width:13%;">
+		<div class="top-header">
+			<h3 style="padding-left: 10px;">Commands</h3>
+		</div>
+
+		<div id="commands">
+
+			<div class="command" id="service" type="LAUNCH_MAIN">REST</div>
+			<div class="command" id="script" type="IMAGE_CAPTURE_FORM">SCRIPT</div>
+			<div class="command" id="event" type="NOTIFICATIONS_LIST">EVENT</div>
+			
+
+		</div>
+	</div>
+
+	<div id="mainCanvas" class="canvas block"
+		style="  float: left; padding: 0px;">
+
+		<div id="toast" class="toast" style="display: none; margin-left: 0px;">No
+			Data</div>
+
+		<div class="top-header">
+
+			<div align="center" id="title_block" onclick="addRawVectorStep()"
+				class="imagebutton"
+				style="box-shadow: none; margin-top: 2px; margin-left: 5px; float: left; width: 100px; height: 35px;">
+				<img id="add_step" style="background: #fafafa;padding: 5px;border-radius: 50%;" class="imagebutton" src="drag/images/io/add.png" width="30px" height="30px">
+			</div>
+
+			<!-- <div align="center" id="title_block" onclick="collectAndSaveData()"
+				class="imagebutton"
+				style="box-shadow: none; margin-top: 2px; margin-left: 5px; float: left; width: 100px; height: 35px;">
+				<img id="add_step" class="imagebutton" src="drag/images/io/Save.gif"
+					width="30px" height="30px" />
+			</div> -->
+
+			
+			<!--
+			<div align="right" id="title_block"
+				onclick="$('#iiner_details').animate({'height':'toggle'});"
+				style="margin: 5px; float: right; width: 200px; height: 300px;">
+				<img id="add_step" class="imagebutton" src="images/io/Details.gif"
+					width="30px" height="30px" />
+
+
+			</div>
+			-->
+
+
+		</div>
+		<!-- <div id="main" style="border-radius:8px;background:#fff;color:black;border:5px solid #aaa;height:auto;min-height:180px;width:97%;margin:1%;float:left" >
+			<h2 class="button" style="width:100%;width: 100%;margin-top:-5px;margin-left: -2px;text-align: left;height: 25px;padding-top: 5px;">Application Details</h2>
+			<table style="height:120px;width:100%;color:black;">
+				<tr>
+					<td>Name</td><td><input id="app_name"/></td>
+					<td>Version</td><td><input id="app_version"/></td>
+				</tr>
+				<tr>
+					<td>Company</td><td><input id="app_company" type="text"/></td>
+					<td>Description</td><td><textarea id="app_description"></textarea></td>
+				</tr>
+				<tr>
+
+					<td>Server</td><td><input id="app_server"></input></td>
+					<td>Logo</td><td><input id="app_logo" type="file"/></td>
+				</tr>
+
+
+				<tr>
+					<td>Default UserName</td><td><input id="app_user"/></td>
+					<td>Login Needed</td><td><input id="app_login" type="checkbox"/></td>
+
+				</tr>
+				<tr>
+
+						<td>Html Output Folder Path</td><td><input id="app_out" value="file:///C:/Users/dtb/Desktop/doc/"></input></td>
+
+				</tr>
+
+			</table>
+		</div> -->
+		<div class="apple_overlay" id="photo2">
+			<a class="close"></a>
+
+			<iframe style="margin-left: 120px;width:400px;height:550px"class="details" src="">
+
+			</iframe>
+		</div>
+		<script>
+				$("#mainCanvas").height($(window).height()-10);
+				var resultMap = [];
+
+				function execute(){
+					$(".fstatus").remove();
+					resultMap = [];
+
+					$("#mainCanvas button").attr("disabled", "");
+					$("#mainCanvas button").css("opacity", "0.5");
+
+
+									$.each($(".stepfail"),function(o,p){
+
+										$(p).removeClass("stepsuccess");
+										$(p).addClass("stepnone");
+
+
+										if($(p).css("width")=="2px"){
+
+											$(p).css("width","1px");
+
+										}
+										if($(p).css("height")=="2px"){
+
+											$(p).css("height","1px");
+										}
+									});
+									$.each($(".stepsuccess"),function(o,p){
+
+										$(p).removeClass("stepsuccess");
+										$(p).addClass("stepnone");
+
+										if($(p).css("width")=="2px"){
+
+											$(p).css("width","1px");
+
+										}
+										if($(p).css("height")=="2px"){
+
+											$(p).css("height","1px");
+										}
+									});
+
+
+					var timer = setInterval("pollRunningStatus()",1000);
+
+					$.getJSON("execute.jsp?name="+$("#script").val(),function(data){
+
+							clearInterval(timer);
+
+							parseStatus(data);
+
+							showDetails();
+
+							$("#mainCanvas button").removeAttr("disabled");
+							$("#mainCanvas button").css("opacity", "1.0");
+
+					});
+				}
+
+				function showDescription(sid){
+
+					$(".apple_overlay .details").html(resultMap[sid].statusDescription);
+					$(".apple_overlay").overlay().load();
+
+
+				}
+
+				function parseStatus(data){
+
+					$(".fstatus").remove();
+
+					$.each(data,function(i,j){
+
+								resultMap[j.stepId]=j;
+
+								if(j.command.name=="End"){
+
+									$("#step_"+j.stepId).append("<h2 class=\"fstatus\">Finish<h2/>");
+
+								}else if(j.status==1){
+
+									$("#step_"+j.stepId).append("<img class=\"fstatus\" src=\"ajax-loader.gif\"/>");
+
+								}else if(j.status==4){
+
+									$("#step_"+j.stepId).append("<img class=\"fstatus\" src=\"pass.png\"/>");
+
+									$.each($(".connector.step_"+j.stepId+".step_"+j.gotoPath),function(o,p){
+										$(p).removeClass("stepnone");
+										$(p).addClass("stepsuccess");
+
+
+										if($(p).css("width")=="1px"){
+
+											$(p).css("width","2px");
+
+										}
+										if($(p).css("height")=="1px"){
+
+											$(p).css("height","2px");
+										}
+									});
+
+								}else if(j.status==5){
+
+
+									$("#step_"+j.stepId).append("<img class=\"fstatus\" onclick=\"showDescription('"+j.stepId+"');\" src=\"fail.png\"/>");
+
+
+									$.each($(".connector.step_"+j.stepId+".step_"+j.gotoPath),function(o,p){
+										$(p).removeClass("stepnone");
+										$(p).addClass("stepfail");
+
+
+										if($(p).css("width")=="1px"){
+
+											$(p).css("width","2px");
+
+
+										}
+										if($(p).css("height")=="1px"){
+
+											$(p).css("height","2px");
+
+										}
+
+									});
+
+
+
+
+								}else if(j.status==9){
+
+									$("#step_"+j.stepId).append("<h2 class=\"fstatus\">Skipped<h2/>");
+
+								}
+
+
+							});
+				}
+
+				function showDetails(start){
+					if(!start){
+						start="assets/www/mainpage.html";
+					}
+					$(".apple_overlay .details").html("");
+					$(".apple_overlay iframe").attr("src",$("#app_out").val()+"/"+start);
+					$(".apple_overlay iframe").load(function(){
+						$(".apple_overlay").overlay().load();
+					});
+
+
+				}
+
+				function pollRunningStatus(){
+
+					$.getJSON("status.jsp",function(data){
+
+						//if(data.indexOf("null")==-1){
+
+							parseStatus(data);
+
+						//}
+					});
+
+
+				}
+
+				function processView(){
+
+					$(".connector").remove();
+					$(".connector-end").remove();
+					$(".step").remove();
+
+					maxLeft=$("#mainCanvas").width();
+					padLeft=25;
+					marTop=75;
+					odd=true;
+
+					$.getJSON("readxml.jsp?name="+$("#script").val(),function(data){
+
+
+						$.each(data.operations,function(i,j){
+
+							//alert(j.name);
+
+
+							if(j.name){
+
+								parseOperation(j);
+							}
+
+						});
+					});
+
+				}
+
+				function parseOperation(opearion){
+
+
+
+
+					$.each(opearion.commands.command,function(l,m){
+
+
+									addRawVectorStep(m.step);
+
+									$("#step_"+m.step).append("<h2 class=\"head\" style=\"float:left\" >"+m.name+"</h2>");
+
+									if(m.name=="End"){
+
+										$("#step_"+m.step).append("<img src=\"images/io/Stop.gif\" />");
+									}
+
+									var connArr=new Array();
+									var labels=new Array();
+									if(m.onSuccess && m.onSuccess.goto){
+										connArr[connArr.length]="step_"+m.onSuccess.goto;
+										labels[labels.length]="OnSuccess";
+									}
+									if(m.onFailure && m.onFailure.goto){
+
+										connArr[connArr.length]="step_"+m.onFailure.goto;
+										labels[labels.length]="onFailure";
+									}
+									if(m.onError && m.onError.goto){
+
+										connArr[connArr.length]="step_"+m.onError.goto;
+										labels[labels.length]="onError";
+									}
+									if(m.onTimeout && m.onTimeout.goto){
+
+										connArr[connArr.length]="step_"+m.onTimeout.goto;
+										labels[labels.length]="onTimeout";
+									}
+									connectors["step_"+m.step]=connArr;
+									labelArray["step_"+m.step]=labels;
+
+				    });
+					prepareConnectors();
+
+				}
+
+				$(".apple_overlay").overlay({effect: 'apple'});
+			</script>
+	</div>
+
+	<div id="propertiesContainer" style="height:100%;overflow-y:auto;width:23%">
+		<div class="top-header" style="margin: 0px;">
+			<h3 style="padding-left: 10px;">
+				Properties - (<span id="propertyStepNumber"></span>)
+			</h3>
+		</div>
+		<div id="propertiesContent">
+			<table id="propertiesTableHeader">
+				<tr>
+					<th>Property</th>
+					<th>Value</th>
+				</tr>
+			</table>
+			<table id="propertiesTableContent">
+			</table>
+
+
+		</div>
+		<button id="addF" style="height: 25px; float: left; margin-top: 10px;" onclick="addField();">New Field</button>
+		<div id="fields">
+
+		</div>
+	</div>
+
+
+</body>
+</html>

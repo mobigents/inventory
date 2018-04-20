@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="icon" type="image/png" href="assets/img/favicon.ico">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+<title>Mobigents</title>
+
+<meta
+	content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
+	name='viewport' />
+<meta name="viewport" content="width=device-width" />
+<link href="assets/css/fusion.css" rel="stylesheet" />
+</head>
+<body>
+	<div id="waitingModal"
+		style="display: block; position: absolute; z-index: 1000;
+	/* top: 50%; */ width: 100%; text-align: center; height: 100%; background: white; color: white; opacity: 1; margin: auto;">
+
+		<div
+			style="margin: 0px auto; vertical-align: ce; margin-top: 20%; color: white; font-size: 1.6em; font-weight: 500;"
+			class="winfo">
+			Plase wait.<br>Operation is in progress...
+		</div>
+
+		<div style="position: relative; margin-top: 20px; display: block"
+			id="spinnerProgress" class="sk-spinner sk-spinner-three-bounce">
+			<div class="sk-bounce1"></div>
+			<div class="sk-bounce2"></div>
+			<div class="sk-bounce3"></div>
+		</div>
+
+	</div>
+	<div class="wrapper">
+		<div class="sidebar" data-color="purple">
+
+
+			<div class="sidebar-wrapper">
+				<div class="logo">
+					<a href="http://mobigents.com" class="simple-text">Mobigents@Inventrory</a>
+				</div>
+
+				<ul class="nav">
+
+
+					<li class="active"><a href="category.html"> <i
+							class="pe-7s-more"></i>
+							<p>Category</p>
+					</a>
+					</li>
+					<li><a href="products.html"> <i class="pe-7s-keypad"></i>
+							<p>Products</p>
+					</a></li>
+					
+					<li><a href="sites.html"> <i class="pe-7s-box2"></i>
+							<p>Sites</p>
+					</a></li>
+					
+
+					<li><a href="addtostock.html"> <i class="fa fa-bars"></i>
+							<p>Add To Stock</p>
+					</a></li>
+
+					<li><a href="addtostock.html"> <i class="fa fa-bars"></i>
+							<p>Withdraw From Stock</p>
+					</a></li>
+					
+					<li><a href="history.html"> <i class="fa fa-bars"></i>
+							<p>History</p>
+					</a>
+					</li>
+
+
+				</ul>
+			</div>
+		</div>
+
+		<div class="main-panel">
+			<nav class="navbar navbar-default navbar-fixed">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse"
+							data-target="#navigation-example-2">
+							<span class="sr-only">Toggle navigation</span> <span
+								class="icon-bar"></span> <span class="icon-bar"></span> <span
+								class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">Dashboard</a>
+					</div>
+
+					<ul class="nav navbar-nav navbar-right">
+
+						<!-- <li class="dropdown" >
+                              <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                                    <span id="dropdownContainer">Dropdown</span>
+                                    <b class="caret"></b>
+                              </a>
+                              <ul class="dropdown-menu" id="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                              </ul>
+                        </li> -->
+						<li><a href="#"> Log out </a></li>
+					</ul>
+
+				</div>
+			</nav>
+
+
+			<div class="content">
+				<div id="mobTable"></div>
+
+				<footer class="footer"> </footer>
+			</div>
+		</div>
+
+	</div>
+
+
+
+</body>
+
+<!--   Core JS Files   -->
+<script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script>
+
+<script src="microutils.js"></script>
+<script src="appcenter.js"></script>
+
+<script type="text/javascript">
+
+
+$(document).ready(function(){
+	   
+	  
+		   var domainMap =[]; 
+		   var allDomainMap =['category']; 
+		   $.getJSON(serverRoot+"/mobigents-rest/objects/schema/category",function(data){
+			   rows = data.rows;
+			   for(var k in rows){	
+				   if(!domainMap[rows[k].data.name]){
+					    var st=allDomainMap[rows[k].data.name];
+					    var count=0;
+					    if(st){
+					    	count=parseInt(st.count);
+					    }
+				   		domainMap[rows[k].data.name]={datadomain:rows[k].data.name,count:count};
+				   }
+			   }
+			   
+			   /* for(var k in domainMap){		
+				   $("#dropdown-menu").append('<li><a>'+k+"("+domainMap[k].count+')</a></li>');
+			   } */
+			   /* $("#dropdown-menu a").click(function(){
+				   var dataS = $(this).html().split("(")[0];
+				   $("#dropdownContainer").html(dataS);
+				   domainLoad(dataS);
+			   }); */
+			   if(rows && rows.length>0){
+				   //$("#dropdownContainer").html(rows[0].data.name);
+			   		domainLoad(rows[0].data.name);
+			   }else{
+				   preloadScripts(function(){
+		    			$(domainContext).addClass("container-fluid");
+		    			$('body #modalTable').remove();
+		    			$("#waitingModal").hide();
+		    	   });
+			   }
+		   });
+	
+});
+
+function domainLoad(name){
+	$("#mobTable").empty();
+	
+	columnsMetaMap = [];
+	
+	$("#mobTable").domainTable({
+   		tableId:'table',
+   		domainName:name,
+   		dateFilter:true
+   	});
+	
+	
+}
+
+
+</script>
+
+</body>
+
+</html>
